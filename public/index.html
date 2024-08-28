@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Bill</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <section id="price-plans">
+            <h2>Price Plans</h2>
+            <ul id="plans-list">
+                <section id="price-plans">
+                    <h2>Price Plans</h2>
+                    <ul id="plans-list"></ul>
+                </section>
+            </ul>
+            <section id="calculate-bill">
+                <h2>Calculate Total Bill</h2>
+                <form id="calculate-bill-form">
+                    <label for="selected-plan">Select Price Plan:</label>
+                    <select id="selected-plan" required></select>
+
+                    <label for="actions">Actions (comma-separated):</label>
+                    <input type="text" id="actions" placeholder="call, sms, call" required>
+
+                    <button type="submit">Calculate Bill</button>
+                </form>
+                <p id="total-bill">Total Bill: R</p>
+            </section>
+            <section id="create-plan">
+                <h2>Create Price Plan</h2>
+                <form id="create-plan-form">
+                    <label for="plan-name">Plan Name:</label>
+                    <input type="text" id="plan-name" required>
+
+                    <label for="call-cost">Call Cost:</label>
+                    <input type="number" id="call-cost" required>
+
+                    <label for="sms-cost">SMS Cost:</label>
+                    <input type="number" id="sms-cost" required>
+
+                    <button type="submit">Create Plan</button>
+                </form>
+            </section>
+
+            <h1>Update Price Plan</h1>
+            <form id="updatePricePlanForm">
+                <input type="text" id="name" name="name" placeholder="Plan Name" required>
+                <input type="number" id="call_cost" name="call_cost" placeholder="Call Cost" step="0.01" required>
+                <input type="number" id="sms_cost" name="sms_cost" placeholder="SMS Cost" step="0.01" required>
+                <button type="submit">Update Price Plan</button>
+            </form>
+
+            <div id="message" class="message"></div> 
+            <script src="app.js"></script>
+
+        </section>
+    </div>
+</body>
+
+</html>
