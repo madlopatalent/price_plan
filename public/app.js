@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:4011/api';
+const apiUrl = 'https://price-plan-ftc5.onrender.com/api';
 
 // Fetch and display all price plans
 async function fetchPricePlans() {
@@ -128,7 +128,7 @@ document.getElementById('updatePricePlanForm').addEventListener('submit', functi
         sms_cost: parseFloat(document.getElementById('sms_cost').value)
     };
 
-    fetch('http://localhost:4011/api/price_plan/update', {
+    fetch('https://price-plan-ftc5.onrender.com/api/price_plan/update', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
