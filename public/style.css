@@ -1,3 +1,4 @@
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -52,6 +53,7 @@ h2 {
     color: #004d40;
 }
 
+
 button {
     background-color: #004d40;
     color: white;
@@ -74,6 +76,7 @@ button.delete-btn:hover {
     background-color: #b71c1c;
 }
 
+/* Form styling */
 form {
     margin-bottom: 20px;
 }
@@ -100,7 +103,6 @@ form select {
     box-sizing: border-box;
 }
 
-
 .message {
     padding: 10px;
     border-radius: 5px;
@@ -115,6 +117,18 @@ form select {
 .message.error {
     background-color: #f8d7da;
     color: #721c24;
+}
+
+
+#total-bill {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #004d40;
+    background-color: #e0f2f1;
+    border: 2px solid #00796b;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 
