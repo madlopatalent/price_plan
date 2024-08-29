@@ -12,12 +12,29 @@
     <div class="container">
         <section id="price-plans">
             <h2>Price Plans</h2>
+            <table id="price-plans-table">
+                <thead>
+                    <tr>
+                        <th>Plan Name</th>
+                        <th>Call Cost</th>
+                        <th>SMS Cost</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="plans-list">
+                    <!-- Price plans will be inserted here -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- <section id="price-plans">
+            <h2>Price Plans</h2>
             <ul id="plans-list">
                 <section id="price-plans">
                     <h2>Price Plans</h2>
                     <ul id="plans-list"></ul>
                 </section>
-            </ul>
+            </ul> -->
             <section id="calculate-bill">
                 <h2>Calculate Total Bill</h2>
                 <form id="calculate-bill-form">
@@ -37,10 +54,10 @@
                     <input type="text" id="plan-name" required>
 
                     <label for="call-cost">Call Cost:</label>
-                    <input type="number" id="call-cost" required>
+                    <input type="number" id="call-cost" step="0.01" required>
 
                     <label for="sms-cost">SMS Cost:</label>
-                    <input type="number" id="sms-cost" required>
+                    <input type="number" id="sms-cost" step="0.01" required>
 
                     <button type="submit">Create Plan</button>
                 </form>

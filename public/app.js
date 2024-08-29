@@ -1,6 +1,5 @@
 const apiUrl = 'https://price-plan-ftc5.onrender.com/api';
 
-// Fetch and display all price plans
 async function fetchPricePlans() {
     try {
         const response = await fetch(`${apiUrl}/price_plans`);
@@ -10,7 +9,7 @@ async function fetchPricePlans() {
             const selectPlan = document.getElementById('selected-plan');
 
             if (plansList) {
-                plansList.innerHTML = '';
+                plansList.innerHTML = ''; // Clear existing table rows
             }
 
             if (selectPlan) {
@@ -18,29 +17,30 @@ async function fetchPricePlans() {
             }
 
             pricePlans.forEach(plan => {
-                const li = document.createElement('li');
-                li.textContent = `${plan.plan_name}: Call Cost - R${plan.call_price}, SMS Cost - R${plan.sms_price}`;
+                const tr = document.createElement('tr');
 
-                // Create a delete button
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.classList.add('delete-btn');
-                deleteButton.setAttribute('data-plan-id', plan.id);
+                tr.innerHTML = `
+                    <td>${plan.plan_name}</td>
+                    <td>R${plan.call_price}</td>
+                    <td>R${plan.sms_price}</td>
+                    <td>
+                        <button class="delete-btn" data-plan-id="${plan.id}">Delete</button>
+                    </td>
+                `;
 
-                // Append the delete button to the list item
-                li.appendChild(deleteButton);
-                plansList.appendChild(li);
-
-                // Add event listener to delete the plan
-                deleteButton.addEventListener('click', function() {
-                    deletePlan(plan.id);
-                });
+                // Append the table row to the tbody
+                plansList.appendChild(tr);
 
                 // Create and append option to the select element
                 const option = document.createElement('option');
                 option.value = plan.plan_name;
                 option.textContent = plan.plan_name;
                 selectPlan.appendChild(option);
+
+                // Add event listener to delete the plan
+                tr.querySelector('.delete-btn').addEventListener('click', function() {
+                    deletePlan(plan.id);
+                });
             });
         } else {
             console.error('Failed to fetch price plans:', response.status);
@@ -50,7 +50,12 @@ async function fetchPricePlans() {
     }
 }
 
-// Create a new price plan
+// Call fetchPricePlans on page load
+document.addEventListener('DOMContentLoaded', fetchPricePlans);
+
+
+
+// Create a price plan if it does not already exist
 document.getElementById('create-plan-form').addEventListener('submit', async function(event) {
     event.preventDefault();
 
@@ -65,35 +70,51 @@ document.getElementById('create-plan-form').addEventListener('submit', async fun
     }
 
     try {
-        // Debug: Log the data being sent to the server
-        console.log('Sending data:', { name, call_cost: callCost, sms_cost: smsCost });
+        // Fetch existing price plans to check for duplicates
+        const existingPlansResponse = await fetch(`${apiUrl}/price_plans`);
+        if (existingPlansResponse.ok) {
+            const existingPlans = await existingPlansResponse.json();
 
-        const response = await fetch(`${apiUrl}/price_plan/create`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: name,
-                call_cost: callCost,
-                sms_cost: smsCost
-            })
-        });
+            // Check if the plan name already exists
+            const existingPlan = existingPlans.find(plan => plan.plan_name.toLowerCase() === name.toLowerCase());
+            if (existingPlan) {
+                // If the plan exists, alert the user and do not create or update it
+                alert('A price plan with the same name already exists.');
+            } else {
+                // If no duplicate exists, create a new plan
+                const createResponse = await fetch(`${apiUrl}/price_plan/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        call_cost: callCost,
+                        sms_cost: smsCost
+                    })
+                });
 
-        if (response.ok) {
-            alert('Price plan created successfully!');
-            fetchPricePlans();
-            document.getElementById('create-plan-form').reset();
+                if (createResponse.ok) {
+                    alert('Price plan created successfully!');
+                    fetchPricePlans();
+                    document.getElementById('create-plan-form').reset();
+                } else {
+                    const errorData = await createResponse.json();
+                    console.error('Error creating price plan:', errorData);
+                    alert(`Failed to create price plan: ${errorData.message || 'Unknown error'}`);
+                }
+            }
         } else {
-            const errorData = await response.json();
-            console.error('Error creating price plan:', errorData);
-            alert(`Failed to create price plan: ${errorData.message || 'Unknown error'}`);
+            console.error('Failed to fetch existing price plans:', existingPlansResponse.status);
         }
     } catch (error) {
         console.error('Error creating price plan:', error);
         alert('An error occurred while creating the price plan.');
     }
 });
+
+
+
 
 // Delete a price plan
 async function deletePlan(planId) {
